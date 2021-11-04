@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"github.com/davecgh/go-spew/spew"
+	"github.com/seanhagen/ruin-generator/ruins"
 )
 
 /**
@@ -11,5 +12,10 @@ import (
  */
 
 func main() {
-	fmt.Println("hello world!")
+	ent := ruins.GetEntrance()
+
+	// feat, lvl, err := ruins.RollMainFeature(0)
+	// spew.Dump(feat, lvl, err)
+
+	spew.Dump(ent)
 }
