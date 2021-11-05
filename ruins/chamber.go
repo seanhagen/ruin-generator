@@ -1,6 +1,8 @@
 package ruins
 
-import "github.com/justinian/dice"
+import (
+	"github.com/justinian/dice"
+)
 
 /**
  * File: chamber.go
@@ -8,20 +10,34 @@ import "github.com/justinian/dice"
  * Creator: Sean Patrick Hagen <sean.hagen@gmail.com>
  */
 
-func createChamber(level int, parent *Exit) (*Room, error) {
+// chamberFeature ...
+type chamberFeature struct {
+	baseFeature
+}
+
+// Apply ...
+func (cf chamberFeature) Apply(exit *Exit) (*Room, error) {
+	return createChamber(exit.Parent.Level+1, exit)
+}
+
+func getSizeAndShape() []Trait {
 	sz, _, err := dice.Roll("1d20")
 	if err != nil {
-		return nil, err
+		return []Trait{}
 	}
 	sh, _, err := dice.Roll("1d20")
 	if err != nil {
-		return nil, err
+		return []Trait{}
 	}
 
 	size := BasicTrait{"Size", sz.Int()}
 	shape := BasicTrait{"Shape", sh.Int()}
 
-	traits := []Trait{size, shape}
+	return []Trait{size, shape}
+}
+
+func createChamber(level int, exit *Exit) (*Room, error) {
+	traits := getSizeAndShape()
 
 	e, _, err := dice.Roll("1d100")
 	if err != nil {
@@ -33,22 +49,23 @@ func createChamber(level int, parent *Exit) (*Room, error) {
 		if err != nil {
 			return nil, err
 		}
-
 		traits = append(traits, BasicTrait{"Chamber Feature", cf.Int()})
 	}
 
 	ro := &Room{
-		Level:  level + 1,
+		ID:     nextRoomID(),
+		Level:  level,
 		Type:   "Chamber",
 		Traits: traits,
 	}
 
-	err = addExits(ro)
-	if err != nil {
-		return nil, err
+	if exit != nil {
+		if exit.Parent != nil {
+			ro.Parent = exit.Parent
+		}
+		exit.Child = ro
 	}
 
-	parent.Child = ro
-
-	return ro, nil
+	err = addExits(ro)
+	return ro, err
 }

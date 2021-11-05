@@ -17,7 +17,23 @@ type result interface {
 	IsResult(int) bool
 	// Name returns the name of the table result
 	Name() string
-	Apply(*Exit) error
+	Apply(*Exit) (*Room, error)
+}
+
+// baseFeature ...
+type baseFeature struct {
+	min, max int
+	name     string
+}
+
+// IsResult  ...
+func (bf baseFeature) IsResult(i int) bool {
+	return i >= bf.min && i <= bf.max
+}
+
+// Name  ...
+func (bf baseFeature) Name() string {
+	return bf.name
 }
 
 type rollingTable struct {
@@ -27,15 +43,15 @@ type rollingTable struct {
 
 // getResult ...
 func (rt rollingTable) getResult() (result, error) {
-	r, _, err := dice.Roll(mfl.diceRoll)
+	r, _, err := dice.Roll(rt.diceRoll)
 	if err != nil {
 		return nil, err
 	}
 
-	for _, f := range mfl.results {
-		if f.rollMatch(r) {
+	for _, f := range rt.results {
+		if f.IsResult(r.Int()) {
 			return f, nil
 		}
 	}
-	return nil, fmt.Errorf("%v is not possible when rolling %v", r, mfl.diceRoll)
+	return nil, fmt.Errorf("%v is not possible when rolling %v", r, rt.diceRoll)
 }

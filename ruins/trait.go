@@ -15,30 +15,38 @@ type Trait interface {
 	String() string
 }
 
-// TraitType ...
-type TraitType string
-
-const (
-	// TypeSize ...
-	TypeSize TraitType = "Size"
-	// TypeShape ...
-	TypeShape = "Shape"
-	// TypeCreature ...
-	TypeCreature = "Creature"
-)
-
 // BasicTrait
 type BasicTrait struct {
-	name TraitType
+	name string
 	roll int
 }
 
 // Name ...
 func (bt BasicTrait) Name() string {
-	return bt.name
+	return string(bt.name)
+}
+
+// Roll ...
+func (bt BasicTrait) Roll() int {
+	return bt.roll
 }
 
 // String ...
 func (bt BasicTrait) String() string {
 	return fmt.Sprintf("%v: %v", bt.name, bt.roll)
+}
+
+// StringTrait ...
+type StringTrait struct {
+	name, value string
+}
+
+// Name ...
+func (st StringTrait) Name() string {
+	return st.name
+}
+
+// String ...
+func (st StringTrait) String() string {
+	return fmt.Sprintf("%v: %v", st.name, st.value)
 }
