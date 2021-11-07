@@ -61,10 +61,10 @@ func (e Exit) String() string {
 	}
 
 	if e.Child != nil {
-		return fmt.Sprintf("Exit %v (%v %v) => %v", e.ID, et, e.Parent.Level, e.Child.ID)
+		return fmt.Sprintf("Exit %v (T:%v L:%v) => %v", e.ID, et, e.Parent.Level, e.Child.ID)
 	}
 
-	return fmt.Sprintf("Exit %v (%v %v) => <<no chamber??>>", e.ID, et, e.Parent.Level)
+	return fmt.Sprintf("Exit %v (T:%v L:%v) => <<no chamber??>>", e.ID, et, e.Parent.Level)
 }
 
 var exitList = []struct {

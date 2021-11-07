@@ -1,0 +1,2 @@
+* determine why rooms come out nil
+- is it something about the weird event logic?

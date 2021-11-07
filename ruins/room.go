@@ -39,13 +39,13 @@ func (r Room) String() string {
 		}
 	}
 
-	msg := fmt.Sprintf("%v Room %v (D: %v, E: %v): %v", indent, r.ID, r.Level, len(r.Exits), r.Type)
+	msg := fmt.Sprintf("%v Room %v (L: %v): %v", indent, r.ID, r.Level, r.Type)
 	msg = fmt.Sprintf("%v\n%v\n", msg, traits)
 	// msg = fmt.Sprintf("%v - Exits:\n%v", msg, exits)
 
 	if len(r.Exits) > 0 {
 		msg = fmt.Sprintf("%v - Exit List:\n", msg)
-		msg = fmt.Sprintf("%v---------##%v##---------\n", msg, r.ID)
+		// msg = fmt.Sprintf("%v---------##%v##---------\n", msg, r.ID)
 
 		list := []string{}
 		for _, e := range r.Exits {
@@ -53,7 +53,7 @@ func (r Room) String() string {
 		}
 
 		msg = fmt.Sprintf("%v%v", msg, strings.Join(list, "\n"))
-		msg = fmt.Sprintf("%v\n+++++++++++%v+++++++++++\n", msg, r.ID)
+		// msg = fmt.Sprintf("%v\n+++++++++++%v+++++++++++\n", msg, r.ID)
 
 		for _, e := range r.Exits {
 			if e.Child == nil {
